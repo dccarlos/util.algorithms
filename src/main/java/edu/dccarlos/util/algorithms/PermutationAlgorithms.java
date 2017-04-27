@@ -1,5 +1,9 @@
 package edu.dccarlos.util.algorithms;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class PermutationAlgorithms {
 
 	public static final void heapAlgorithmIterative(int n, char[] A) {
@@ -39,6 +43,33 @@ public class PermutationAlgorithms {
 			}
 			heapAlgorithmRecursive(n - 1, A);
 		}
+	}
+	
+	public static final Set<String> permute(final String str) {
+		final char strArray[] = str.toCharArray();
+		final int controller[] = new int[strArray.length];
+		final Set<String> subStrings = new HashSet<>();
+
+		int upperIndex = 1;
+
+		subStrings.add(str);
+
+		while(upperIndex < strArray.length) {
+			if(controller[upperIndex] < upperIndex) {
+				int lowerIndex = upperIndex % 2 * controller[upperIndex];
+				swap(upperIndex, lowerIndex, strArray);
+
+				subStrings.add(Arrays.toString(strArray));
+
+				controller[upperIndex]++;
+				upperIndex = 1;
+			} else {
+				controller[upperIndex] = 0;
+				upperIndex++;
+			}
+		}
+
+		return subStrings;
 	}
 
 	public static final void swap(int element1, int element2, char[] A) {
