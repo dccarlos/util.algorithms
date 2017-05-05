@@ -3,6 +3,7 @@ package edu.dccarlos.util.algorithms;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public class StringAlgorithms {
 	public static final int areAnagrams(final String str1, final String str2) {
@@ -41,5 +42,15 @@ public class StringAlgorithms {
 		}
 
 		return counter;
+	}
+	
+	// https://www.hackerrank.com/challenges/ashton-and-string/topics/lcp-array
+	public static final int[] getSufixArray(final String strArray) {
+		return IntStream.range(0, strArray.length()).boxed().sorted((x, y) -> {
+			String subStr1 = strArray.substring(x);
+			String subStr2 = strArray.substring(y);
+
+			return subStr1.compareTo(subStr2);
+		}).mapToInt(x -> x).toArray();
 	}
 }
