@@ -45,7 +45,6 @@ public class StringAlgorithms {
 		return counter;
 	}
 	
-	// https://www.hackerrank.com/challenges/ashton-and-string/topics/lcp-array
 	public static final int[] getSuffixArrayNaive(final String strArray) {
 		return IntStream.range(0, strArray.length()).boxed().sorted((x, y) -> {
 			String subStr1 = strArray.substring(x);
@@ -55,9 +54,8 @@ public class StringAlgorithms {
 		}).mapToInt(x -> x).toArray();
 	}
 	
-	public static int[] getSuffixArray(final String str) {
-		final int n = str.length();
-
+	public static int[] getSuffixArray01(final String str) {
+		int n = str.length();
 		Integer[] order = new Integer[n];
 
 		for(int i = 0; i < n; i++)
@@ -74,6 +72,7 @@ public class StringAlgorithms {
 		}
 
 		for(int len = 1; len < n; len *= 2) {
+
 			int[] c = classes.clone();
 
 			for(int i = 0; i < n; i++) {
@@ -96,5 +95,35 @@ public class StringAlgorithms {
 		}
 
 		return sa;
+	}
+
+	public static int[] getLcpArray(String input, int[] sa) {
+		final int length = input.length();
+		final int[] rank = new int[length];
+
+		for(int i = 0; i < length; i++)
+			rank[sa[i]] = i;
+
+		int h = 0;
+
+		final int[] lcp = new int[length];
+
+		for(int i = 0; i < length; i++) {
+			int k = rank[i];
+			if(k == 0) {
+				lcp[k] = -1;
+			} else {
+				final int j = sa[k - 1];
+				while(i + h < length && j + h < length && input.charAt(i + h) == input.charAt(j + h)) {
+					h++;
+				}
+
+				lcp[k] = h;
+			}
+			if(h > 0)
+				h--;
+		}
+
+		return lcp;
 	}
 }
